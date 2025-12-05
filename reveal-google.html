@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang='en'>
+<head>
+<meta charset='utf-8'/>
+<meta name='viewport' content='width=device-width, initial-scale=1'/>
+<title>Captured — Training Simulation</title>
+<link href='https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap' rel='stylesheet'>
+<style>
+:root {
+  --bg: #0f1113;
+  --card: #202124;
+  --bd: #3c4043;
+  --txt: #e8eaed;
+  --mut: #9aa0a6;
+  --accent: #8ab4f8;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--txt);
+  font-family: Roboto, system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif;
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+}
+.card {
+  width: min(820px, 96vw);
+  background: var(--card);
+  border: 1px solid var(--bd);
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .4);
+}
+h1 {
+  font-size: 1.7rem;
+  margin: 0 0 8px;
+}
+p.sub {
+  color: #bdc1c6;
+  margin: 0 0 16px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 720px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+.panel {
+  background: #1a1c1e;
+  border: 1px solid var(--bd);
+  border-radius: 12px;
+  padding: 14px;
+}
+.k {
+  color: #9aa0a6;
+}
+.v {
+  font-weight: 500;
+  display: inline;
+}
+.row {
+  margin-top: 6px;
+}
+.cta {
+  margin-top: 14px;
+}
+a.button {
+  display: inline-block;
+  background: #8ab4f8;
+  color: #202124;
+  padding: 10px 16px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: 500;
+}
+.legal {
+  color: #9aa0a6;
+  font-size: .9rem;
+  margin-top: 10px;
+}
+/* Blur styling for blurred parts */
+.blur-secure {
+  filter: blur(4px);
+  display: inline-block;
+  cursor: default;
+}
+</style>
+</head>
+<body>
+<main class='card'>
+
+<h1>⚠️ You’ve been captured — in a training simulation</h1>
+<p class='sub'>This shows how convincing look‑alike pages can trick you into entering sensitive information. Always verify the URL, use a password manager, and enable MFA.</p>
+
+<div class='grid'>
+  <div class='panel'>
+    <h3>Entered values</h3>
+    <p class='row'><span class='k'>Identifier:</span> 
+      <span id='u'>
+        <span id="u-visible-start" class="v"></span>
+        <span id="u-blurred" class="v blur-secure"></span>
+        <span id="u-visible-end" class="v"></span>
+      </span>
+    </p>
+    <p class='row'><span class='k'>Password:</span> 
+      <span id='p'>
+        <span id="p-visible" class="v"></span>
+        <span id="p-blurred" class="v blur-secure"></span>
+      </span>
+    </p>
+  </div>
+
+  <div class='panel'>
+    <h3>Context</h3>
+    <p class='row'><span class='k'>Device/Browser:</span> <span class='v' id='ua'></span></p>
+    <p class='row'><span class='k'>Time:</span> <span class='v' id='t'></span></p>
+  </div>
+</div>
+<div class='cta'><a class='button' href='index.html'>Run again</a></div>
+<p class='legal'>For educational use only; not affiliated with Google. Do not enter real credentials.</p>
+</main>
+
+<script>
+(function() {
+  const params = new URLSearchParams(location.search);
+
+  const identifier = params.get('u') || '';
+  const password = params.get('p') || '';
+
+  document.getElementById('ua').textContent = navigator.userAgent;
+  document.getElementById('t').textContent = new Date().toLocaleString();
+
+  // Blur identifier: first 3 chars unblurred, rest blurred with dots
+  function blurIdentifier(id){
+    if(!id) return ['(not provided)', '', ''];
+    if(id.length <= 3) return [id, '', ''];
+    const visibleStart = id.slice(0, 3);
+    const blurredLength = id.length - 3;
+    const blurred = '●'.repeat(blurredLength);
+    return [visibleStart, blurred, ''];
+  }
+
+  // Blur password: first 2 chars unblurred, rest blurred with dots
+  function blurPassword(pw){
+    if(!pw) return ['', '(not provided)'];
+    if(pw.length <= 2) return [pw, ''];
+    const visible = pw.slice(0,2);
+    const blurred = '●'.repeat(pw.length - 2);
+    return [visible, blurred];
+  }
+
+  const [idVisibleStart, idBlurred, idVisibleEnd] = blurIdentifier(identifier);
+  document.getElementById('u-visible-start').textContent = idVisibleStart;
+  document.getElementById('u-blurred').textContent = idBlurred;
+  document.getElementById('u-visible-end').textContent = idVisibleEnd;
+
+  const [pwVisible, pwBlurred] = blurPassword(password);
+  document.getElementById('p-visible').textContent = pwVisible;
+  document.getElementById('p-blurred').textContent = pwBlurred;
+})();
+</script>
+</body>
+</html>

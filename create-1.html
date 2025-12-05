@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name='viewport' content='width=device-width, initial-scale=1'/>
+<link href='https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap' rel='stylesheet'>
+<title>Create your Google Account</title>
+
+<style>
+  :root{ --bg:#0f1113; --card:#202124; --bd:#3c4043; --txt:#e8eaed; --mut:#9aa0a6; --link:#8ab4f8; --accent:#8ab4f8; --input:#5f6368 }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);font-family:Roboto,system-ui,-apple-system,Segoe UI,Helvetica,Arial,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh}
+  .wrap{width:min(920px,96vw)}
+  .banner{position:fixed; top:8px; left:50%; transform:translateX(-50%); background:#1f2937; color:#93c5fd; border:1px solid #374151; padding:6px 10px; border-radius:999px; font-size:.85rem}
+  .card{background:#202124;border:1px solid var(--bd);border-radius:18px;box-shadow:0 2px 8px rgba(0,0,0,.4);padding:28px}
+  .content{display:grid;grid-template-columns:1.1fr 1fr;gap:40px}
+  @media (max-width:800px){.content{grid-template-columns:1fr;gap:24px}}
+  .left{padding:8px 8px 8px 12px}
+  .gmark{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .glogo{display:inline-grid;grid-template-columns:repeat(2,10px);grid-auto-rows:10px;gap:3px}
+  .glogo span{display:block;width:10px;height:10px;border-radius:50%}
+  .r{background:#ea4335}.y{background:#fbbc05}.g{background:#34a853}.b{background:#4285f4}
+  .brand{font-weight:500;letter-spacing:.2px}
+  h1.title{margin:4px 0 8px;font-size:2.4rem;font-weight:300}
+  p.sub{margin:0;color:#bdc1c6}
+  .right{padding-top:6px}
+  label{display:block;font-size:.95rem;color:#bdc1c6;margin:0 0 8px 2px}
+  input, select{width:100%;background:#202124;color:var(--txt);border:1px solid var(--input);border-radius:6px;padding:14px 12px;font-size:1rem}
+  input:focus, select:focus{outline:2px solid #263238;border-color:#8ab4f8}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .hint{margin-top:10px}
+  .hint a{color:#8ab4f8;text-decoration:none}
+  .note{margin-top:18px;color:#bdc1c6;line-height:1.45}
+  .note a{color:#8ab4f8;text-decoration:none}
+  .actions{display:flex;justify-content:space-between;align-items:center;margin-top:22px}
+  .actions a{color:#8ab4f8;text-decoration:none;font-weight:500}
+  .next{background:#8ab4f8;color:#202124;border:0;border-radius:20px;padding:10px 20px;font-weight:500;cursor:pointer}
+  .footer{display:flex;justify-content:space-between;align-items:center;padding:10px 6px 0;color:#9aa0a6;font-size:.9rem}
+  .footer a{color:#9aa0a6;text-decoration:none;margin-left:16px}
+  button:disabled{background:#5f6368;cursor:not-allowed}
+  .legal{margin-top:14px;color:#9aa0a6;font-size:.85rem;text-align:center}
+  .hidden{display:none}
+  .fade-enter{opacity:0;transform:translateY(6px)}
+  .fade-enter-active{opacity:1;transform:translateY(0);transition:all .18s ease}
+  #firstError {
+    color: #f44336;
+    font-size: 0.9rem;
+    margin-top: 4px;
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<div class='banner'></div>
+<div class='wrap'><div class='card'><div class='content'>
+
+<section class='left'>
+  <div class="Wf6lSd" jscontroller="rmumx" jsname="n7vHCb">
+    <svg xmlns="https://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 40 48" aria-hidden="true" jsname="jjf7Ff"><path fill="#4285F4" d="M39.2 24.45c0-1.55-.16-3.04-.43-4.45H20v8h10.73c-.45 2.53-1.86 4.68-4 6.11v5.05h6.5c3.78-3.48 5.97-8.62 5.97-14.71z"></path><path fill="#34A853" d="M20 44c5.4 0 9.92-1.79 13.24-4.84l-6.5-5.05C24.95 35.3 22.67 36 20 36c-5.19 0-9.59-3.51-11.15-8.23h-6.7v5.2C5.43 39.51 12.18 44 20 44z"></path><path fill="#FABB05" d="M8.85 27.77c-.4-1.19-.62-2.46-.62-3.77s.22-2.58.62-3.77v-5.2h-6.7C.78 17.73 0 20.77 0 24s.78 6.27 2.14 8.97l6.71-5.2z"></path><path fill="#E94235" d="M20 12c2.93 0 5.55 1.01 7.62 2.98l5.76-5.76C29.92 5.98 25.39 4 20 4 12.18 4 5.43 8.49 2.14 15.03l6.7 5.2C10.41 15.51 14.81 12 20 12z"></path></svg>
+  </div>
+  <h1 class='title'>Create your Google Account</h1>
+  <p class='sub'>Enter your name</p>
+</section>
+
+<section class='right'>
+  <form id="f1" action="create-2.html" method="get" novalidate>
+    <label>First name </label>
+    <input id="first" name="first" type="text" placeholder='First name' required />
+    <div id="firstError">First name is required</div>
+
+    <label>Last name</label>
+    <input id="last" name="last" type="text" placeholder='Last name (optional)'>
+    
+    <div class='actions'>
+      <button class='next' id="next1" type="submit" disabled>Next</button>
+    </div>
+  </form>
+</section>
+
+</div><div class='legal'></div></div><div class="footer">
+  <div>English (United States)</div>
+  <div>
+    <a href="https://support.google.com/accounts?hl=en&visit_id=639002815694005484-1359071994&rd=2&p=account_iph#topic=3382296">Help</a>
+    <a href="https://policies.google.com/terms?gl=US&hl=en">Privacy</a>
+    <a href="https://policies.google.com/terms?gl=US&hl=en">Terms</a>
+  </div>
+</div>
+
+<script>
+(function(){
+  const firstEl = document.getElementById('first');
+  const lastEl = document.getElementById('last');
+  const nextBtn = document.getElementById('next1');
+  const form = document.getElementById('f1');
+  const errorEl = document.getElementById('firstError');
+
+  function updateButton() {
+    const isValid = firstEl.value.trim().length > 0;
+    nextBtn.disabled = !isValid;
+    if (isValid) {
+      errorEl.style.display = 'none';
+    }
+  }
+
+  firstEl.addEventListener('input', () => {
+    updateButton();
+  });
+
+  form.addEventListener('submit', e => {
+    if (firstEl.value.trim().length === 0) {
+      e.preventDefault();
+      errorEl.style.display = 'block';
+      firstEl.focus();
+    }
+  });
+
+  // Initialize button state on page load
+  updateButton();
+
+  // Optional: Save to sessionStorage and build params on submit
+  function set(k,v){ try{sessionStorage.setItem(k,v||'');}catch(e){} }
+  function get(k){ try{return sessionStorage.getItem(k)||'';}catch(e){return ''} }
+
+  // Restore values for convenience (optional)
+  firstEl.value = get('first') || firstEl.value;
+  lastEl.value  = get('last')  || lastEl.value;
+
+  firstEl.addEventListener('input', ()=>set('first', firstEl.value));
+  lastEl.addEventListener('input', ()=>set('last', lastEl.value));
+
+  form.addEventListener('submit', ev =>{
+    ev.preventDefault();
+    if(firstEl.value.trim().length === 0) return; // safety
+    const params = new URLSearchParams({first:firstEl.value||'', last:lastEl.value||''});
+    window.location.href = 'create-2.html?' + params.toString();
+  });
+})();
+</script>
+
+</body>
+</html>

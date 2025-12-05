@@ -1,72 +1,178 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>What Just Happened?</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    :root { --bg:#0b1220; --card:#121a2b; --accent:#ff6b6b; --text:#e7eef8; --muted:#9ab0cf; }
-    body{margin:0; font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; background:linear-gradient(160deg,#0b1220 0%, #10172a 50%, #0b1220 100%); color:var(--text); min-height:100vh; display:grid; place-items:center;}
-    .card{width:min(860px,95vw); background:var(--card); border:1px solid rgba(255,255,255,.06); border-radius:20px; padding:28px; box-shadow:0 12px 40px rgba(0,0,0,.35)}
-    h1{margin:0 0 10px 0}
-    p.sub{margin:0 0 22px 0; color:var(--muted)}
-    .grid{display:grid; grid-template-columns:1fr; gap:16px}
-    @media (min-width:720px){ .grid{ grid-template-columns:1fr 1fr } }
-    .panel{background:#0e1524; border:1px solid rgba(255,255,255,.08); border-radius:14px; padding:16px}
-    .k{color:#9ab0cf}
-    .v{font-weight:600}
-    .cta{margin-top:16px}
-    a.button{display:inline-block; background:#59d185; color:#0b1220; font-weight:800; padding:10px 14px; border-radius:10px; text-decoration:none}
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Captured — Training Simulation</title>
+<link href='https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap' rel='stylesheet'>
+<style>
+:root {
+  --bg: #0f1113;
+  --card: #202124;
+  --bd: #3c4043;
+  --txt: #e8eaed;
+  --mut: #9aa0a6;
+  --accent: #8ab4f8;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--txt);
+  font-family: Roboto, system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif;
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+}
+.card {
+  width: min(820px, 96vw);
+  background: var(--card);
+  border: 1px solid var(--bd);
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .4);
+}
+h1 {
+  font-size: 1.7rem;
+  margin: 0 0 8px;
+}
+p.sub {
+  color: #bdc1c6;
+  margin: 0 0 16px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 720px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+.panel {
+  background: #1a1c1e;
+  border: 1px solid var(--bd);
+  border-radius: 12px;
+  padding: 14px;
+}
+.k {
+  color: #9aa0a6;
+}
+.v {
+  font-weight: 500;
+}
+.row {
+  margin-top: 6px;
+}
+.cta {
+  margin-top: 14px;
+}
+a.button {
+  display: inline-block;
+  background: #8ab4f8;
+  color: #202124;
+  padding: 10px 16px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: 500;
+}
+.legal {
+  color: #9aa0a6;
+  font-size: .9rem;
+  margin-top: 10px;
+}
+
+/* Blur styling only for the blurred part of password */
+.blur-secure {
+  filter: blur(4px);
+  transition: filter 0.3s ease;
+  display: inline-block;
+  cursor: default;
+}
+</style>
 </head>
 <body>
-  <main class="card">
-    <h1>⚠️ This was a simulation — and it worked.</h1>
-    <p class="sub">Here’s what the page captured when you scanned the QR code and entered your details.</p>
+<div class="card">
+  <h2>⚠️ You’ve been captured — in a training simulation</h2>
+  <p class="warn">This shows how convincing look‑alike pages can trick you into entering sensitive information. Always verify the URL, use a password manager, and enable MFA.</p>
 
-    <section class="grid">
-      <div class="panel">
-        <h3>Captured Credentials</h3>
-        <p><span class="k">Username:</span> <span class="v" id="u"></span></p>
-        <p><span class="k">Password:</span> <span class="v" id="p"></span></p>
+  <div class="grid">
+    <div class="panel">
+      <h2>Entered values</h2>
+      <div>
+        Name: <span id="val-name">(not provided)</span><br>
+        DOB: <span id="val-dob">(not provided)</span><br>
+        Gender: <span id="val-gender">(not provided)</span><br>
+        Password: 
+        <span id="val-password">
+          <span id="pw-visible"></span><span id="pw-blurred" class="blur-secure"></span>
+        </span>
       </div>
-      <div class="panel">
-        <h3>Environmental Clues</h3>
-        <p><span class="k">Device / Browser:</span> <span class="v" id="ua"></span></p>
-        <p><span class="k">Time:</span> <span class="v" id="t"></span></p>
-      </div>
-    </section>
-
-    <div class="panel" style="margin-top:16px">
-      <h3>How attackers do this</h3>
-      <ol>
-        <li>They place a malicious QR code or link where you expect something legitimate (posters, tables, emails).</li>
-        <li>The QR sends you to a look‑alike login page.</li>
-        <li>When you enter credentials, the site immediately collects them and may even redirect you to a real site to avoid suspicion.</li>
-      </ol>
-      <h3>Protect yourself</h3>
-      <ul>
-        <li>Inspect the URL before entering any credentials. Look for misspellings and unexpected domains.</li>
-        <li>Use a password manager — it won’t auto‑fill on impostor sites.</li>
-        <li>Turn on multi‑factor authentication (MFA) everywhere possible.</li>
-        <li>Be wary of public QR codes; prefer typing known URLs or using official apps.</li>
-      </ul>
     </div>
+    <div class="panel">
+      <h3>Context</h3>
+      <p><span class="label">Device/Browser:</span> <span id="rev-ua"></span></p>
+      <p><span class="label">Time:</span> <span id="rev-time"></span></p>
+    </div>
+  </div>
+  <div class="cta"><a class="button" href="index.html">Run again</a></div>
+  <p style="color:#9aa0a6">For educational use only; not affiliated with Google. Do not enter real credentials.</p>
+</div>
 
-    <p class="cta"><a class="button" href="index.html">Run the demo again</a> &nbsp; <a class="button" href="live.html" style="background:#8ab4ff">Open the live panel</a></p>
+<script>
+(function(){
+  const qs = new URLSearchParams(window.location.search);
+  const get = (k) => {
+    const v = qs.get(k);
+    if (v !== null && String(v).trim() !== '') return v;
+    try {
+      return sessionStorage.getItem(k) || '';
+    } catch(e) {
+      return '';
+    }
+  };
 
-    <p style="color:#9ab0cf; font-size:.85rem; margin-top:8px"><em>Ethics note:</em> This demo uses fake credentials only. Never collect real usernames or passwords.</p>
-  </main>
+  const first = get('first');
+  const last = get('last');
+  const month = get('month');
+  const day = get('day');
+  const year = get('year');
+  const gender = get('gender');
+  const password = get('password');
+  const nameOut = [first, last].filter(Boolean).join(' ').trim();
+  const dobOut = [month, day, year].filter(Boolean).join(' ').trim();
+  const uaEl = document.getElementById('rev-ua');
+  const timeEl = document.getElementById('rev-time');
 
-  <script>
-    const params = new URLSearchParams(location.search);
-    const u = params.get('u') || '(not provided)';
-    const p = params.get('p') || '(not provided)';
-    document.getElementById('u').textContent = u;
-    document.getElementById('p').textContent = p;
-    document.getElementById('ua').textContent = navigator.userAgent;
-    document.getElementById('t').textContent = new Date().toLocaleString();
-  </script>
+  if(uaEl) uaEl.textContent = navigator.userAgent;
+  if(timeEl) timeEl.textContent = new Date().toLocaleString();
+
+  function show(id, val){
+    const el = document.getElementById(id);
+    if(el) el.textContent = (val && String(val).trim()) ? val : '(not provided)';
+  }
+
+  show('val-name', nameOut);
+  show('val-dob', dobOut);
+  show('val-gender', gender);
+
+  const pwVisibleEl = document.getElementById('pw-visible');
+  const pwBlurredEl = document.getElementById('pw-blurred');
+
+  if(pwVisibleEl && pwBlurredEl){
+    if(!password){
+      pwVisibleEl.textContent = '(not provided)';
+      pwBlurredEl.textContent = '';
+    } else if(password.length <= 2){
+      // show all plainly if <= 2 chars
+      pwVisibleEl.textContent = password;
+      pwBlurredEl.textContent = '';
+    } else {
+      pwVisibleEl.textContent = password.slice(0, 2);
+      pwBlurredEl.textContent = '●'.repeat(password.length - 2);
+    }
+  }
+})();
+</script>
 </body>
 </html>
